@@ -1,86 +1,139 @@
 'use client';
 
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import Chip from '@mui/material/Chip';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { useEffect, useRef } from 'react';
 import RecruiterPanel from '@/components/ui/RecruiterPanel';
-import resumeData from '@/data/resume.json'; // Import resume data
+import resumeData from '@/data/resume.json';
 
 export default function Home() {
+  const sectionsRef = useRef<HTMLElement[]>([]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    sectionsRef.current.forEach((section) => {
+      if (section) {
+        observer.observe(section);
+      }
+    });
+
+    return () => {
+      sectionsRef.current.forEach((section) => {
+        if (section) {
+          observer.unobserve(section);
+        }
+      });
+    };
+  }, []);
+
   return (
-    <main>
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        {/* Resume Header Section */}
-        <Box sx={{ my: 4, p: 3, backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: 1 }}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {resumeData.name}
-          </Typography>
-          <Typography variant="h5" component="h2" color="text.secondary" gutterBottom>
-            {resumeData.title}
-          </Typography>
-          <Typography variant="body1" sx={{ mt: 2 }}>
-            {resumeData.summary}
-          </Typography>
-        </Box>
+    <main className="container">
+      <header className="header">
+        <h1>{resumeData.name}</h1>
+        <h2>{resumeData.title}</h2>
+        <p>{resumeData.summary}</p>
+      </header>
 
-        {/* Skills Section */}
-        <Box sx={{ my: 4, p: 3, backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: 1 }}>
-          <Typography variant="h6" gutterBottom>
-            Skills
-          </Typography>
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-            {resumeData.skills.map((skill) => (
-              <Chip
-                key={skill.name}
-                label={skill.name}
-                variant="outlined"
-                color="primary"
-                sx={{ borderColor: 'primary.light', color: 'primary.light' }}
-              />
-            ))}
-          </Box>
-        </Box>
+      <section
+        className="section"
+        ref={(el) => (sectionsRef.current[0] = el!)}
+      >
+        <h2 className="section-title">Skills</h2>
+        <div className="skills-grid">
+          {resumeData.skills.map((skill, index) => (
+            <div key={index} className="skill-card">
+              {skill.name}
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* Projects Section */}
-        <Box sx={{ my: 4, p: 3, backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: 1 }}>
-          <Typography variant="h6" gutterBottom>
-            Projects
-          </Typography>
-          <Grid container spacing={2}>
-            {resumeData.projects.map((project, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index} component="div">
-                <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', backgroundColor: 'rgba(255, 255, 255, 0.05)' }}>
-                  <CardContent>
-                    <Typography gutterBottom variant="h6" component="div">
-                      {project.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {project.description}
-                    </Typography>
-                    <Box sx={{ mt: 2 }}>
-                      <Typography variant="subtitle2">Skills Used:</Typography>
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
-                        {project.skillsUsed.map((skill, skillIndex) => (
-                          <Chip key={skillIndex} label={skill} size="small" variant="filled" color="info" />
-                        ))}
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+      <section
+        className="section"
+        ref={(el) => (sectionsRef.current[1] = el!)}
+      >
+        <h2 className="section-title">Projects</h2>
+        <div className="projects-grid">
+          {resumeData.projects.map((project, index) => (
+            <div key={index} className="project-card">
+              <h3>{project.name}</h3>
+              <p>{project.description}</p>
+              <div className="skills-used">
+                {project.skillsUsed.map((skill, skillIndex) => (
+                  <span key={skillIndex} className="skill-tag">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* Recruiter Panel */}
-        <Box sx={{ my: 4, zIndex: 1, position: 'relative', backgroundColor: 'rgba(0, 0, 0, 0.5)', p: 2, borderRadius: 1 }}>
-          <RecruiterPanel />
-        </Box>
-      </Container>
+      <section
+        className="section"
+        ref={(el) => (sectionsRef.current[2] = el!)}
+      >
+        <RecruiterPanel />
+      </section>
+
+      <style jsx>{`
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 40px 20px;
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 60px;
+        }
+        .section {
+          margin-bottom: 60px;
+        }
+        .section-title {
+          text-align: center;
+          margin-bottom: 40px;
+        }
+        .skills-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 15px;
+        }
+        .skill-card {
+          background-color: #1a1a1a;
+          padding: 15px;
+          border-radius: 8px;
+          text-align: center;
+        }
+        .projects-grid {
+          display: grid;
+          gap: 20px;
+        }
+        .project-card {
+          background-color: #1a1a1a;
+          padding: 20px;
+          border-radius: 8px;
+        }
+        .skills-used {
+          margin-top: 15px;
+        }
+        .skill-tag {
+          background-color: #333;
+          color: #eee;
+          padding: 5px 10px;
+          border-radius: 5px;
+          margin-right: 5px;
+          font-size: 12px;
+        }
+      `}</style>
     </main>
   );
 }

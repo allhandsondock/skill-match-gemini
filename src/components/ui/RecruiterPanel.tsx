@@ -1,13 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import CircularProgress from '@mui/material/CircularProgress';
-import Alert from '@mui/material/Alert';
+import resumeData from '@/data/resume.json';
 
 interface MatchResult {
   score: number;
@@ -51,77 +45,129 @@ const RecruiterPanel = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>
-        Recruiter Skill Matcher
-      </Typography>
-      <TextField
-        fullWidth
-        multiline
+    <div className="recruiter-panel">
+      <h2 className="title">Recruiter Skill Matcher</h2>
+      <textarea
+        className="textarea"
         rows={6}
-        variant="outlined"
-        label="Paste Job Description Here"
+        placeholder="Paste Job Description Here"
         value={jobDescription}
         onChange={(e) => setJobDescription(e.target.value)}
-        sx={{ mb: 2 }}
         disabled={loading}
       />
-      <Typography variant="body2" sx={{ mb: 1 }}>
-        OR
-      </Typography>
-      <TextField
-        fullWidth
-        variant="outlined"
-        label="Enter Job URL (e.g., LinkedIn, Indeed)"
+      <div className="or-divider">OR</div>
+      <input
+        type="text"
+        className="input"
+        placeholder="Enter Job URL (e.g., LinkedIn, Indeed)"
         value={jobUrl}
         onChange={(e) => setJobUrl(e.target.value)}
-        sx={{ mb: 2 }}
         disabled={loading}
       />
-      <Button
-        variant="contained"
+      <button
+        className="button"
         onClick={handleMatch}
         disabled={loading || (!jobDescription && !jobUrl)}
-        startIcon={loading && <CircularProgress size={20} color="inherit" />}
       >
         {loading ? 'Analyzing...' : 'Analyze Match'}
-      </Button>
+      </button>
 
-      {error && (
-        <Alert severity="error" sx={{ mt: 3 }}>
-          {error}
-        </Alert>
-      )}
+      {error && <div className="error-message">{error}</div>}
 
       {matchResult && (
-        <Box sx={{ mt: 3 }}>
-          <Typography variant="h6">Match Result</Typography>
-          <Typography variant="h4" color="primary">{matchResult.score}%</Typography>
-          <Box sx={{ display: 'flex', gap: 4, mt: 2 }}>
-            <Box>
-              <Typography variant="subtitle1">Matched Skills</Typography>
+        <div className="match-result">
+          <h3>Match Result</h3>
+          <div className="score">{matchResult.score}%</div>
+          <div className="skill-lists">
+            <div className="skill-list">
+              <h4>Matched Skills</h4>
               <ul>
                 {matchResult.matchedSkills.length > 0 ? (
-                  matchResult.matchedSkills.map(skill => <li key={skill}>{skill}</li>)
+                  matchResult.matchedSkills.map((skill) => <li key={skill}>{skill}</li>)
                 ) : (
                   <li>No matched skills</li>
                 )}
               </ul>
-            </Box>
-            <Box>
-              <Typography variant="subtitle1">Missing Skills</Typography>
+            </div>
+            <div className="skill-list">
+              <h4>Missing Skills</h4>
               <ul>
                 {matchResult.missingSkills.length > 0 ? (
-                  matchResult.missingSkills.map(skill => <li key={skill}>{skill}</li>)
+                  matchResult.missingSkills.map((skill) => <li key={skill}>{skill}</li>)
                 ) : (
                   <li>No missing skills</li>
                 )}
               </ul>
-            </Box>
-          </Box>
-        </Box>
+            </div>
+          </div>
+        </div>
       )}
-    </Paper>
+
+      <style jsx>{`
+        .recruiter-panel {
+          background-color: #1a1a1a;
+          padding: 30px;
+          border-radius: 8px;
+          text-align: center;
+        }
+        .title {
+          margin-bottom: 20px;
+        }
+        .textarea,
+        .input {
+          width: 100%;
+          padding: 10px;
+          border-radius: 5px;
+          border: 1px solid #333;
+          background-color: #222;
+          color: #eee;
+          margin-bottom: 15px;
+        }
+        .or-divider {
+          margin: 15px 0;
+        }
+        .button {
+          background-color: #333;
+          color: #eee;
+          padding: 10px 20px;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .button:hover {
+          background-color: #444;
+        }
+        .button:disabled {
+          background-color: #222;
+          cursor: not-allowed;
+        }
+        .error-message {
+          color: #ff4d4d;
+          margin-top: 20px;
+        }
+        .match-result {
+          margin-top: 30px;
+        }
+        .score {
+          font-size: 48px;
+          font-weight: bold;
+          color: #4caf50;
+          margin-bottom: 20px;
+        }
+        .skill-lists {
+          display: flex;
+          justify-content: space-around;
+        }
+        .skill-list h4 {
+          margin-bottom: 10px;
+        }
+        .skill-list ul {
+          list-style: none;
+          padding: 0;
+        }
+      `}</style>
+    </div>
   );
 };
 

@@ -1,0 +1,46 @@
+{
+  "name": "Alex Johnson",
+  "title": "Azure DevOps Engineer",
+  "contact": {
+    "email": "alex.johnson@example.com",
+    "linkedin": "linkedin.com/in/alexjohnsondevops",
+    "github": "github.com/alexjohnsondev"
+  },
+  "summary": "Highly skilled Azure DevOps Engineer with 7+ years of experience in designing, implementing, and managing CI/CD pipelines, cloud infrastructure, and automation solutions on Microsoft Azure. Proficient in scripting, containerization, and monitoring.",
+  "skills": [
+    { "name": "Azure", "proficiency": 0.95 },
+    { "name": "Azure DevOps", "proficiency": 0.9 },
+    { "name": "CI/CD", "proficiency": 0.9 },
+    { "name": "Terraform", "proficiency": 0.85 },
+    { "name": "Docker", "proficiency": 0.8 },
+    { "name": "Kubernetes", "proficiency": 0.75 },
+    { "name": "PowerShell", "proficiency": 0.85 },
+    { "name": "Bash", "proficiency": 0.7 },
+    { "name": "Git", "proficiency": 0.9 },
+    { "name": "Ansible", "proficiency": 0.65 },
+    { "name": "Monitoring (Azure Monitor)", "proficiency": 0.8 },
+    { "name": "Networking", "proficiency": 0.7 }
+  ],
+  "projects": [
+    {
+      "name": "Automated Azure Infrastructure Deployment",
+      "description": "Designed and implemented end-to-end automated deployment of Azure infrastructure using Terraform and Azure DevOps Pipelines, reducing deployment time by 60%.",
+      "skillsUsed": ["Azure", "Terraform", "Azure DevOps", "CI/CD", "PowerShell"]
+    },
+    {
+      "name": "Containerized Microservices Platform",
+      "description": "Migrated monolithic applications to a microservices architecture, containerizing them with Docker and orchestrating on Azure Kubernetes Service (AKS).",
+      "skillsUsed": ["Azure", "Kubernetes", "Docker", "CI/CD", "Git"]
+    },
+    {
+      "name": "CI/CD Pipeline Optimization",
+      "description": "Optimized existing Azure DevOps CI/CD pipelines for faster build and release cycles, integrating automated testing and security scanning tools.",
+      "skillsUsed": ["Azure DevOps", "CI/CD", "Git", "PowerShell", "Monitoring (Azure Monitor)"]
+    },
+    {
+      "name": "Hybrid Cloud Connectivity Solution",
+      "description": "Implemented secure and reliable hybrid cloud connectivity between on-premises data centers and Azure using ExpressRoute and VPN Gateways.",
+      "skillsUsed": ["Azure", "Networking", "PowerShell"]
+    }
+  ]
+}
